@@ -1,3 +1,17 @@
-@rootURL= http://localhost:3000
+@rootUrl = http://localhost:3000/api/customer/v1/auth
 
-GET {{rootURL}}
+### SIGNUP REQUEST
+POST {{rootUrl}}/signup
+Content-Type: application/json
+
+{
+  "fName": "test1",
+  "lName": "test1",
+  "email": "test@example.com",
+  "password": "Password123"
+}
+
+
+### VERIFY EMAIL
+#
+GET http://localhost:3000/api/customer/v1/auth/verify/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QxQGV4YW1wbGUuY29tIiwiaWF0IjoxNzUyMDI0MzE2LCJleHAiOjE3NTIwMjUyMTZ9.IlB0j9y-2jnqKRo6Q4enYWuLkazvUeo_qv2KreHyUfw
