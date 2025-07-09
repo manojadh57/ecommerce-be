@@ -5,13 +5,24 @@ POST {{rootUrl}}/signup
 Content-Type: application/json
 
 {
-  "fName": "test1",
+  "fName": "test2",
   "lName": "test1",
-  "email": "test@example.com",
+  "email": "tes2@example.com",
   "password": "Password123"
 }
 
 
-### VERIFY EMAIL
-#
-GET http://localhost:3000/api/customer/v1/auth/verify/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QxQGV4YW1wbGUuY29tIiwiaWF0IjoxNzUyMDI0MzE2LCJleHAiOjE3NTIwMjUyMTZ9.IlB0j9y-2jnqKRo6Q4enYWuLkazvUeo_qv2KreHyUfw
+### verify 
+
+GET {{rootUrl}}/verify/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlczJAZXhhbXBsZS5jb20iLCJpYXQiOjE3NTIwMjQ5ODksImV4cCI6MTc1MjAyNTg4OX0.qsTFN2xoZ7FN1fs31Ixe9I6c3MCgD2vttgb7gheOUHI
+
+
+
+### LOGIN – verified user
+POST {{rootUrl}}/login
+Content-Type: application/json
+
+{
+  "email": "tes2@example.com",
+  "password": "Password123"
+}

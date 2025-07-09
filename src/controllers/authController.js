@@ -14,30 +14,25 @@ import {
 import { sendVerificationEmail } from "../helpers/emailHelper.js";
 import { hashPassword, comparePassword } from "../utils/bcrypt.js";
 
-//SIGNUP//
-
+// SIGNUP
 export const signup = async (req, res) => {
   try {
     const { fName, lName, email, password, role = "student" } = req.body;
 
-    // basic field check
     if (!fName || !lName || !email || !password) {
       return res
         .status(400)
         .json({ status: "error", message: "All fields are required" });
     }
 
-    // email uniqueness
     if (await getUserByEmail(email)) {
       return res
         .status(400)
         .json({ status: "error", message: "Email already registered" });
     }
 
-    // create verification token (15 min)
     const verificationToken = await signAccessJWT({ email }, "15m");
 
-    // persist user
     await createNewUser({
       fName,
       lName,
@@ -47,38 +42,45 @@ export const signup = async (req, res) => {
       verificationToken,
     });
 
-    // send verification email
     await sendVerificationEmail(email, verificationToken);
 
     return res
       .status(201)
-      .json({ status: "success", message: "Signup OK – verify e‑mail" });
+      .json({ status: "success", message: "Signup OK – verify e-mail" });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ status: "error", message: err.message });
   }
 };
 
-//VERIFY EMAIL//
+//  VERIFY EMAIL
 export const verifyEmail = async (req, res) => {
-  const token = req.params.token;
-  const user = await Customer.findOne({ verificationToken: token });
+  try {
+    const { token } = req.params;
+    const { email } = verifyAccessToken(token);
 
-  if (!user) {
+    const user = await getUserByEmail(email);
+    if (!user || user.isVerified) {
+      return res
+        .status(400)
+        .json({ status: "error", message: "Invalid or already verified" });
+    }
+
+    await updateUser({ email }, { isVerified: true, verificationToken: "" });
+
+    return res.json({
+      status: "success",
+      message: "Email verified successfully",
+    });
+  } catch (err) {
+    console.error("Email verification error:", err);
     return res
       .status(400)
-      .json({ status: "error", message: "Invalid or expired token" });
+      .json({ status: "error", message: "Verification failed" });
   }
-
-  user.isVerified = true; // ✅ This line
-  user.verificationToken = null; // ✅ Clears token
-  await user.save(); // ✅ Saves update
-
-  res
-    .status(200)
-    .json({ status: "success", message: "Email verified successfully" });
 };
-//LOGIN//
+
+//  LOGIN
 export const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
@@ -90,13 +92,11 @@ export const login = async (req, res, next) => {
     }
 
     const user = await getUserByEmail(email);
-
-    console.log(user);
-
-    if (!user || !user.verified) {
-      return res
-        .status(401)
-        .json({ status: "error", message: "Account inactive / not verified" });
+    if (!user || !user.isVerified) {
+      return res.status(401).json({
+        status: "error",
+        message: "Account inactive or not verified",
+      });
     }
 
     const pwMatch = comparePassword(password, user.password);
@@ -106,12 +106,14 @@ export const login = async (req, res, next) => {
         .json({ status: "error", message: "Invalid login details" });
     }
 
-    const accessJWT = signAccessJWT({ email });
+    const accessJWT = await signAccessJWT({ email });
     const refreshJWT = await signRefreshJWT({ email });
 
-    res.json({
+    await updateUser({ email }, { refreshJWT }); // save token to DB
+
+    return res.json({
       status: "success",
-      message: "user authenticated",
+      message: "User authenticated",
       tokens: { accessJWT, refreshJWT },
     });
   } catch (err) {
@@ -119,7 +121,7 @@ export const login = async (req, res, next) => {
   }
 };
 
-// refresh JWT//
+//  REFRESH TOKEN
 export const refreshAccess = async (req, res) => {
   try {
     const { refreshToken } = req.body;
@@ -138,9 +140,11 @@ export const refreshAccess = async (req, res) => {
         .json({ status: "error", message: "Invalid refresh token" });
     }
 
-    const newAccess = signAccessJWT({ email: decoded.email });
-    res.json({ status: "success", accessJWT: newAccess });
+    const newAccess = await signAccessJWT({ email: decoded.email });
+    const newRefresh = signAccessJWT({ email: decoded.email });
+
+    return res.json({ status: "success", accessJWT: newAccess });
   } catch (err) {
-    res.status(500).json({ status: "error", message: err.message });
+    return res.status(500).json({ status: "error", message: err.message });
   }
 };
