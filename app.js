@@ -2,6 +2,9 @@ import "dotenv/config";
 import express from "express";
 import connectMongoDB from "./src/config/mongodbConfig.js";
 import authRouter from "./src/routes/authRouter.js";
+import productRoutes from "./src/routes/productRoutes.js";
+import categoryRoutes from "./src/routes/categoryRoutes.js";
+import orderRoutes from "./src/routes/orderRoutes.js";
 
 connectMongoDB();
 
@@ -11,10 +14,26 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+///mongoDB connection/
+
 app.get("/", (req, res) =>
   res.json({ status: "sucess", message: "API is running" })
 );
 
+//authRoutes//
+
 app.use("/api/customer/v1/auth", authRouter);
+("");
+//productRoutes//
+
+app.use("/api/customer/v1/products", productRoutes);
+
+//Category routes//
+
+app.use("/api/customer/v1/categories", categoryRoutes);
+
+//order Routes//]
+
+app.use("/api/customer/v1/orders", orderRoutes);
 
 export default app;
