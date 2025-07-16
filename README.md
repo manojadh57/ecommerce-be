@@ -97,18 +97,19 @@ http://localhost:8000/api/customer/v1
 ## Project Structure
 ```
 ecommerce-be/
-■■■ src/
-■ ■■■ config/ # MongoDB connection & environment setup
-■ ■■■ controllers/ # Route handler logic
-■ ■■■ middleware/ # JWT auth middleware
-■ ■■■ models/ # Mongoose schemas (User, Product, Category, Order)
-■ ■■■ routes/ # Express routers
-■■■ rest.http # Sample HTTP requests for testing
-■■■ .env # Environment variables (not committed)
-■■■ .gitignore
-■■■ package.json
-■■■ yarn.lock / package-lock.json
-■■■ server.js # Application entry point
+├── src/
+│   ├── config/           # MongoDB connection & environment setup
+│   ├── controllers/      # Route handler logic
+│   ├── middleware/       # JWT auth middleware
+│   ├── models/           # Mongoose schemas (User, Product, Category, Order)
+│   └── routes/           # Express routers
+├── rest.http            # Sample HTTP requests for testing
+├── .env                 # Environment variables (not committed)
+├── .gitignore
+├── package.json
+├── yarn.lock / package-lock.json
+└── server.js            # Application entry point
+
 ```
 ---
 ## License
