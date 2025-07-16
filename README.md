@@ -113,5 +113,4 @@ ecommerce-be/
 ```
 ---
 ## License
-This project is open-source under the MIT License.
-Feel free to reuse, modify, and extend for your own learning or projects!
+Feel free to reuse, modify, and extend for your own learning or projects
