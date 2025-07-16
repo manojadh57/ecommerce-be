@@ -33,8 +33,17 @@ Handles user signup/login/verification, lets anyone browse products & categories
 git clone https://github.com/manojadh57/ecommerce-be.git
 cd ecommerce-be
 
-### 2. install dependencies
+## Quick Start
 
-npm install
-# or
-yarn install
+### 1. Clone the repo
+
+```bash
+git clone https://github.com/manojadh57/ecommerce-be.git
+cd ecommerce-be
+
+
+
+
+
+
+
