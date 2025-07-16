@@ -33,7 +33,7 @@ Handles user signup/login/verification, lets anyone browse products & categories
 git clone https://github.com/manojadh57/ecommerce-be.git
 cd ecommerce-be
 
-
+### 2. install dependencies
 
 npm install
 # or
