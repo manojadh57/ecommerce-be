@@ -32,3 +32,9 @@ Handles user signup/login/verification, lets anyone browse products & categories
 ```bash
 git clone https://github.com/manojadh57/ecommerce-be.git
 cd ecommerce-be
+
+
+
+npm install
+# or
+yarn install
