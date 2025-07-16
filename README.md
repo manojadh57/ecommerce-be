@@ -38,3 +38,38 @@ Provides authentication, product/category browsing, and order placement for logg
    ```bash
    git clone https://github.com/manojadh57/ecommerce-be.git
    cd ecommerce-be
+
+  
+Install dependencies
+
+npm install
+# or
+yarn install
+
+
+Create a .env file in the project root with these variables:
+
+PORT=8000
+MONGO_URI=mongodb://localhost:27017/yourDatabaseName
+JWT_SECRET=your_jwt_secret_here
+
+
+Start the server
+
+npm run dev
+# or
+yarn dev
+The API will be available at http://localhost:8000/api/customer/v1
+
+API Endpoints
+Base URL: http://localhost:8000/api/customer/v1
+
+Authentication
+
+Method	Path	Body / Query	Description
+POST	/auth/signup	{ fName, lName, email, password }	Create account & send verification
+GET	/auth/verify/:token	–	Verify email token
+POST	/auth/login	{ email, password }	Login → returns { accessToken }
+
+
+
