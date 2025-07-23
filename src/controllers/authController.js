@@ -17,7 +17,7 @@ import { hashPassword, comparePassword } from "../utils/bcrypt.js";
 // SIGNUP
 export const signup = async (req, res) => {
   try {
-    const { fName, lName, email, password, role = "student" } = req.body;
+    const { fName, lName, email, password, role = "customer" } = req.body;
 
     if (!fName || !lName || !email || !password) {
       return res
@@ -32,6 +32,8 @@ export const signup = async (req, res) => {
     }
 
     const verificationToken = await signAccessJWT({ email }, "15m");
+
+    // send verification email
 
     await createNewUser({
       fName,
