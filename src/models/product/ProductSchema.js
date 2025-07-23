@@ -8,7 +8,7 @@ const productSchema = new mongoose.Schema(
     stock: Number,
     category: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "category",
+      ref: "Category",
     },
     images: [String],
     ratings: [Number],

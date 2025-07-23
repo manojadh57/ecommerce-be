@@ -3,7 +3,7 @@ import { getUserByEmail, getUserByID } from "../models/user/UserModel.js";
 import { config } from "../config/config.js";
 
 export const protect = async (req, res, next) => {
-  try {
+  try {x
     let token;
 
     const authHeader = req.headers.authorization;
@@ -20,7 +20,7 @@ export const protect = async (req, res, next) => {
       }
 
       req.user = user;
-      next();
+      next();x
     } else {
       return res.status(401).json({ message: "Not authorized, no token" });
     }

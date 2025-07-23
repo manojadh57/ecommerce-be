@@ -28,7 +28,9 @@ Content-Type: application/json
 }
 
 ### TEST PRODUCTS
-GET {{rootUrl}}/products
+GET {{rootUrl}}/products?page=1
+
+
 
 
 
@@ -43,6 +45,7 @@ GET {{rootUrl}}/categories
 POST {{rootUrl}}/orders
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlczFAZXhhbXBsZS5jb20iLCJpYXQiOjE3NTI2Mjk2MzMsImV4cCI6MTc1MjcxNjAzM30.N3sB_Nke8W-Xl1kAzOwuRd8VX-LZmyt0n9fB2hqDz-w
+
 {
   "products": [
     {
@@ -52,4 +55,23 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlczFAZ
   ],
   "totalAmount": 2499
 }
+
+###GET MY ORDERS##
+GET {{rootUrl}}/orders
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlczFAZXhhbXBsZS5jb20iLCJpYXQiOjE3NTI2Mjk2MzMsImV4cCI6MTc1MjcxNjAzM30.N3sB_Nke8W-Xl1kAzOwuRd8VX-LZmyt0n9fB2hqDz-w
+
+
+###sumit a review##
+
+### 1. SUBMIT A REVIEW (logged-in user)
+POST {{rootUrl}}/reviews
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlczFAZXhhbXBsZS5jb20iLCJpYXQiOjE3NTI2Mjk2MzMsImV4cCI6MTc1MjcxNjAzM30.N3sB_Nke8W-Xl1kAzOwuRd8VX-LZmyt0n9fB2hqDz-w
+
+{
+  "productId": "6876f89651a0344d0fb9f059",
+  "rating": 5,
+  "comment": "Absolutely loved this product!"
+}
+
 
