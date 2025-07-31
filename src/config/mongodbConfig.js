@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { config } from "../config/config.js";
 
-export const connectMongoDB = async () => {
+export const connectMongoDB = () => {
   return mongoose.connect(config.mongodb.url);
 };
 

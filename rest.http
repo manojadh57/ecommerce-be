@@ -35,7 +35,7 @@ GET {{rootUrl}}/products?page=1
 
 
 ### GET SINGLE PRODUCT
-GET {{rootUrl}}/products/6876fc0951a0344d0fb9f065
+GET {{rootUrl}}/products/688190b476f081edb92f8938
 
 
 ### GET ALL CATEGORIES

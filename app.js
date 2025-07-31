@@ -15,9 +15,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
-///mongoDB connection/
-connectMongoDB();
-
 app.get("/", (req, res) =>
   res.json({ status: "sucess", message: "API is running" })
 );
