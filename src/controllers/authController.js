@@ -113,10 +113,12 @@ export const login = async (req, res, next) => {
 
     await updateUser({ email }, { refreshJWT }); // save token to DB
 
+    user.password = "";
     return res.json({
       status: "success",
       message: "User authenticated",
       tokens: { accessJWT, refreshJWT },
+      user,
     });
   } catch (err) {
     next(err);
