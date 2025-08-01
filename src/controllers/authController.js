@@ -3,7 +3,7 @@ import {
   getUserByEmail,
   updateUser,
 } from "../models/user/UserModel.js";
-
+import { v4 as uuidv4 } from "uuid";
 import {
   signAccessJWT,
   signRefreshJWT,
@@ -11,8 +11,10 @@ import {
   verifyRefreshJWT,
 } from "../utils/jwtHelper.js";
 
-import { sendVerificationEmail } from "../helpers/emailHelper.js";
+import { sendVerificationEmail } from "../helpers/emailService.js";
 import { hashPassword, comparePassword } from "../utils/bcrypt.js";
+import { createNewSession } from "../models/session/SessionSchema.js";
+import { token } from "morgan";
 
 // SIGNUP
 export const signup = async (req, res) => {
@@ -35,7 +37,8 @@ export const signup = async (req, res) => {
 
     // send verification email
 
-    await createNewUser({
+    //create a user using createNewUser model
+    const user = await createNewUser({
       fName,
       lName,
       role,
@@ -44,11 +47,39 @@ export const signup = async (req, res) => {
       verificationToken,
     });
 
-    await sendVerificationEmail(email, verificationToken);
+    // check if the user has the id and create the session
+    if (user?._id) {
+      const session = await createNewSession({
+        token: uuidv4(),
+        association: user.email,
+      });
 
+      //check the session has id
+      if (session?._id) {
+        const url = `${process.env.ROOT_URL}/activate-user?sessionId=${session._id}&t=${session.token}`;
+        console.log(url);
+
+        await sendVerificationEmail({
+          email: user.email,
+          url,
+          name: user.fName,
+        });
+        return res
+          .status(201)
+          .json({ status: "success", message: "Signup OK – verify e-mail",
+            user: {
+    id: user._id,
+    fName: user.fName,
+    lName: user.lName,
+    email: user.email,
+    role: user.role,
+  },
+          });
+      }
+    }
     return res
-      .status(201)
-      .json({ status: "success", message: "Signup OK – verify e-mail" });
+      .status(500)
+      .json({ status: "error", message: "unable to sign in, please try again" });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ status: "error", message: err.message });
