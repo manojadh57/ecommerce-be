@@ -2,6 +2,7 @@ import Order from "../models/order/OrderSchema.js";
 
 export const placeOrder = async (req, res) => {
   try {
+    console.log("TEST");
     const { products, totalAmount } = req.body;
     const userId = req.user.id;
 
@@ -13,11 +14,12 @@ export const placeOrder = async (req, res) => {
     });
 
     await newOrder.save();
-    res
+    return res
       .status(201)
       .json({ message: "Order placed successfully", order: newOrder });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.log(error.message);
+    return res.status(500).json({ message: error.message });
   }
 };
 

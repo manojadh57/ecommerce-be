@@ -3,10 +3,11 @@ import { getUserByEmail, getUserByID } from "../models/user/UserModel.js";
 import { config } from "../config/config.js";
 
 export const protect = async (req, res, next) => {
-  try {x
+  try {
     let token;
 
     const authHeader = req.headers.authorization;
+    console.log(111, authHeader);
 
     if (authHeader && authHeader.startsWith("Bearer")) {
       token = authHeader.split(" ")[1];
@@ -20,12 +21,12 @@ export const protect = async (req, res, next) => {
       }
 
       req.user = user;
-      next();x
+      next();
     } else {
       return res.status(401).json({ message: "Not authorized, no token" });
     }
   } catch (error) {
-    res
+    return res
       .status(401)
       .json({ message: "Not authorized, token failed", error: error.message });
   }
