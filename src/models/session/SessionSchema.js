@@ -35,6 +35,15 @@ export const createNewSession = (obj) => {
   return SessionSchema(obj).save();
 };
 
+//
+export const getSession=(filter)=> {
+  return SessionSchema.findOne(filter);
+};
+
+//deleteing
+export const deleteSession = (filter)=> {
+  return SessionSchema.findOneAndDelete(filter);
+}
 export const findToken = (token) => {
   return sessionSchema.findOne({ token });
 };

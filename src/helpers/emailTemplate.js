@@ -22,3 +22,55 @@ export const sendVerificationEmailTemplate = ({
       `,
   };
 };
+
+
+//SEND THE OTP TO THE USER 
+
+export const passwordResetOTPsendTemplate = ({email, name, otp}) => {
+    return {
+           from: `'Local library <${process.env.SMTP_EMAIL}>'`, //sender address
+        to: `${email}`, //list of receivers
+        subject: 'Reset your password', // subject line
+        text: `'Hello ${name}, here is your OTP to reset the password. This will expire in 5 min ${otp}.'`, //plain text
+        html: `
+         <p>Dear ${name} </p>  
+         <br />
+         <p>Here is your OTP to reset the password. This will expire in 5 min.
+         <br />
+
+         <br/>
+         OTP is ${otp}.</p>
+         <br />
+
+         Thank you
+   
+        
+        ` 
+    }
+};
+
+
+// SEND THE UPDATED INFO ABOUT PROFILE UPDATE 
+export const userProfileUpdateNotificationTemplate = ({email , name})=> {
+    return {
+                from: `'Local library <${process.env.SMTP_EMAIL}>'`, //sender address
+        to: `${email}`, //list of receivers
+        subject: 'Your account has been updated', // subject line
+        text: `'Hello ${name}, your account has been updated. If this wasn't you. Change your password and contact us.'`, //plain text
+        html: `
+         <p>Dear ${name} </p>  
+         <br />
+         <p>Your account has been updated. If this wasn't you. Change your password and contact us.
+         <br />
+
+         <br/>
+        
+         <br />
+
+         Thank you
+   
+        
+        ` 
+    }
+}
+
