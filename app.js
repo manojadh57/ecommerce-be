@@ -7,6 +7,7 @@ import categoryRoutes from "./src/routes/categoryRoutes.js";
 import orderRoutes from "./src/routes/orderRoutes.js";
 import reviewRoutes from "./src/routes/reviewRoutes.js";
 import cors from "cors";
+import paymentRoutes from "./src/routes/paymentRoutes.js";
 
 const app = express();
 
@@ -38,5 +39,8 @@ app.use("/api/customer/v1/orders", orderRoutes);
 
 //review Routers//
 app.use("/api/customer/v1/reviews", reviewRoutes);
+
+//stripe payment//
+app.use("/api/customer/v1/payments", paymentRoutes);
 
 export default app;

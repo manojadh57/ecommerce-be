@@ -1,42 +1,69 @@
 import Review from "../models/review/reviewSchema.js";
 import Product from "../models/product/ProductSchema.js";
 
+// POST /api/customer/v1/reviews
 export const submitReview = async (req, res) => {
   try {
-    const { productId, rating, comment } = req.body;
+    const userId = req.user?._id;
+    const { productId, rating, comment = "" } = req.body;
 
-    // 1. Create the review (approved defaults to false)
-    const review = await Review.create({
+    if (!userId) return res.status(401).json({ message: "login required" });
+    if (!productId || !rating) {
+      return res.status(400).json({ message: "productId and rating required" });
+    }
+    const r = Number(rating);
+    if (r < 1 || r > 5)
+      return res.status(400).json({ message: "rating must be 1..5" });
+
+    // one review per user per product (update if exists)
+    let review = await Review.findOne({ productId, userId });
+
+    if (review) {
+      review.rating = r;
+      review.comment = String(comment).trim();
+      review.approved = false; // re-approve after edits
+      await review.save();
+      return res.status(200).json(review);
+    }
+
+    // create new review
+    review = await Review.create({
       productId,
-      userId: req.user._id,
-      rating,
-      comment,
+      userId,
+      rating: r,
+      comment: String(comment).trim(),
+      approved: false,
     });
 
-    // 2. Push review ID into the product’s `reviews` array
+    // keep product.reviews in sync (no duplicates)
     await Product.findByIdAndUpdate(productId, {
-      $push: { reviews: review._id },
+      $addToSet: { reviews: review._id },
     });
 
-    // 3. Return the newly created review
     return res.status(201).json(review);
   } catch (err) {
-    // ❌ No `next(err)` here—errors bubble as unhandled promise rejections
     return res.status(500).json({ message: err.message });
   }
 };
 
+// GET /api/customer/v1/reviews/:productId
 export const getProductReviews = async (req, res) => {
   try {
-    // 1. Fetch only approved reviews for this product
-    const reviews = await Review.find({
-      productId: req.params.productId,
-      approved: true,
-    }).populate("userId", "fName lName"); // populates reviewer’s name
+    const { productId } = req.params;
 
-    // 2. Return the list
-    return res.json(reviews);
+    const reviews = await Review.find({ productId, approved: true })
+      .populate("userId", "fName lName name email")
+      .sort({ createdAt: -1 });
+
+    const count = reviews.length;
+    const average = count
+      ? +(reviews.reduce((sum, r) => sum + (r.rating || 0), 0) / count).toFixed(
+          2
+        )
+      : 0;
+
+    return res.json({ reviews, average, count });
   } catch (err) {
-    return res.status(400).json({ message: err.message });
+    return res.status(500).json({ message: err.message });
   }
 };

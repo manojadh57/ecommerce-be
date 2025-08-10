@@ -3,12 +3,14 @@ import {
   submitReview,
   getProductReviews,
 } from "../controllers/reviewController.js";
-import authMiddleware from "../middleware/authMiddleware.js";
+import { protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-router.post("/", authMiddleware, submitReview);
+// Create or update a review (must be logged in)
+router.post("/", protect, submitReview);
 
+// Get approved reviews for a product (public)
 router.get("/:productId", getProductReviews);
 
 export default router;
