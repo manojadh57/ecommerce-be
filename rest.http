@@ -7,24 +7,40 @@ Content-Type: application/json
 {
   "fName": "test",
   "lName": "test2",
-  "email": "tes1@example.com",
+  "email": "test12@example.com",
   "password": "Password123"
 }
 
 
-### verify 
-
-GET {{rootUrl}}/auth/verify/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlczFAZXhhbXBsZS5jb20iLCJpYXQiOjE3NTI2MjU0NTgsImV4cCI6MTc1MjYyNjM1OH0.tOj_ERW6iHqNe1FmSzrYgR71S45G2oopuR3_mnEFQx4
-
-
-
+###verify the user and activate
+GET {{rootUrl}}/auth/activate-user?sessionId=688d6c215d4b7824586e5f81&t=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QxMkBleGFtcGxlLmNvbSIsImlhdCI6MTc1NDA5ODcyMSwiZXhwIjoxNzU0MDk5NjIxfQ.a0lkCaoEMEYTAv9Fs44-M5xfEXMPacUENjMzv0HnZvA
 ### LOGIN – verified user
 POST {{rootUrl}}/auth/login
 Content-Type: application/json
 
 {
-  "email": "tes1@example.com",
-  "password": "Password123"
+  "email": "test12@example.com",
+  "password": "Password1234"
+}
+
+###generate the otp
+POST {{rootUrl}}/auth/otp
+Content-Type:  application/json 
+
+{
+  "email": "test12@example.com"
+}
+
+
+###reseting the password
+
+POST {{rootUrl}}/auth/reset-password
+Content-Type: application/json
+
+{
+    "email": "test12@example.com",
+  "password": "Password1234",
+  "otp":7850
 }
 
 ### TEST PRODUCTS

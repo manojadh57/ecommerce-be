@@ -6,9 +6,15 @@ const sessionSchema = new mongoose.Schema(
       type: String,
       require: true,
     },
-    associate: {
+    association: {
       type: String,
       default: "",
+    },
+       expire: {
+        type: Date,
+        required: true,
+        default: new Date(Date.now() + 86400000), //1000*60*60*60 1
+        expires: 0,
     },
   },
   {
@@ -22,8 +28,22 @@ const SessionSchema = mongoose.model("Session", sessionSchema);
 
 export const insertToken = (obj) => {
   return SessionSchema(obj).save();
+}; 
+
+//creating a session
+export const createNewSession = (obj) => {
+  return SessionSchema(obj).save();
 };
 
+//
+export const getSession=(filter)=> {
+  return SessionSchema.findOne(filter);
+};
+
+//deleteing
+export const deleteSession = (filter)=> {
+  return SessionSchema.findOneAndDelete(filter);
+}
 export const findToken = (token) => {
   return sessionSchema.findOne({ token });
 };
