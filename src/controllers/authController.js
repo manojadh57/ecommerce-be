@@ -145,7 +145,7 @@ export const refreshAccess = async (req, res) => {
     }
 
     const newAccess = await signAccessJWT({ email: decoded.email });
-    const newRefresh = signAccessJWT({ email: decoded.email });
+    const newRefresh = await signAccessJWT({ email: decoded.email });
 
     return res.json({ status: "success", accessJWT: newAccess });
   } catch (err) {

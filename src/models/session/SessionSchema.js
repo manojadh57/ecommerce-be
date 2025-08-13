@@ -4,7 +4,7 @@ const sessionSchema = new mongoose.Schema(
   {
     token: {
       type: String,
-      require: true,
+      required: true,
     },
     associate: {
       type: String,
@@ -25,5 +25,5 @@ export const insertToken = (obj) => {
 };
 
 export const findToken = (token) => {
-  return sessionSchema.findOne({ token });
+  return SessionSchema.findOne({ token });
 };
