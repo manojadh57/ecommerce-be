@@ -5,16 +5,16 @@ POST {{rootUrl}}/auth/signup
 Content-Type: application/json
 
 {
-  "fName": "test",
-  "lName": "test2",
-  "email": "test12@example.com",
+  "fName": "bibek",
+  "lName": "hamal",
+  "email": "bbekhamal26@gmail.com",
   "password": "Password123"
 }
 
 
 ###verify the user and activate
-GET {{rootUrl}}/auth/activate-user?sessionId=688d6c215d4b7824586e5f81&t=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QxMkBleGFtcGxlLmNvbSIsImlhdCI6MTc1NDA5ODcyMSwiZXhwIjoxNzU0MDk5NjIxfQ.a0lkCaoEMEYTAv9Fs44-M5xfEXMPacUENjMzv0HnZvA
-### LOGIN – verified user
+GET {{rootUrl}}/auth/activate-user?sessionId=689d60c72ab2e01a9a9bb2c6&t=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QxMjM0NUBleGFtcGxlLmNvbSIsImlhdCI6MTc1NTE0NDM5MCwiZXhwIjoxNzU1MTQ1MjkwfQ.neDFjLlNsSIx7UFntelvTKaBF7a_KBcAE1XpZOpwXoA
+
 POST {{rootUrl}}/auth/login
 Content-Type: application/json
 

@@ -24,6 +24,12 @@ import {
 } from "../models/session/SessionSchema.js";
 import { token } from "morgan";
 import { generateRandomOTP } from "../utils/randomeGenerator.js";
+import mongoose from "mongoose"; // At the top
+
+
+
+// const session = await getSession({ _id: new mongoose.Types.ObjectId(sessionId) });
+// const session = await getSession({ _id: sessionId });
 
 // SIGNUP
 export const signup = async (req, res) => {
@@ -58,7 +64,7 @@ export const signup = async (req, res) => {
 
     // check if the user has the id and create the session
     if (user?._id) {
-      const verificationToken = await signAccessJWT({ email }, "15m");
+      // const verificationToken = await signAccessJWT({ email }, "15m");
       const session = await createNewSession({
         token: verificationToken,
         association: user.email,
@@ -66,7 +72,9 @@ export const signup = async (req, res) => {
 
       //check the session has id
       if (session?._id) {
-        const url = `${process.env.ROOT_URL}/activate-user?sessionId=${session._id}&t=${verificationToken}`;
+        // const url = `${process.env.ROOT_URL}/activate-user?sessionId=${session._id}&t=${verificationToken}`;
+        const url = `http://localhost:5173/activate-user?sessionId=${session._id}&t=${verificationToken}`;
+
         console.log(url);
 
         await sendVerificationEmail({
@@ -137,7 +145,13 @@ export const verifyEmail = async (req, res) => {
 
     // grabbing the session from the db
 
-    const session = await getSession({ _id: sessionId });
+    // const session = await getSession({ _id: sessionId });
+    const session = await getSession({ _id: new mongoose.Types.ObjectId(sessionId) });
+// console.log("Session from DB:", session);
+// console.log("Session token from DB:", session?.token);
+// console.log("Token from URL:", token);
+// console.log("Equal?", session?.token === token);
+
 
     if (!session || session.token !== token) {
       return res.status(400).json({
@@ -249,7 +263,7 @@ export const refreshAccess = async (req, res) => {
     }
 
     const newAccess = await signAccessJWT({ email: decoded.email });
-    const newRefresh = signAccessJWT({ email: decoded.email });
+    const newRefresh = await signAccessJWT({ email: decoded.email });
 
     return res.json({ status: "success", accessJWT: newAccess });
   } catch (err) {

@@ -4,7 +4,7 @@ const sessionSchema = new mongoose.Schema(
   {
     token: {
       type: String,
-      require: true,
+      required: true,
     },
     association: {
       type: String,
@@ -45,5 +45,5 @@ export const deleteSession = (filter)=> {
   return SessionSchema.findOneAndDelete(filter);
 }
 export const findToken = (token) => {
-  return sessionSchema.findOne({ token });
+  return SessionSchema.findOne({ token });
 };
