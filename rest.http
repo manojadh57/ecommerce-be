@@ -20,8 +20,13 @@ Content-Type: application/json
 
 {
   "email": "test12@example.com",
-  "password": "Password1234"
+  "password": "Password"
 }
+
+###get user profile
+
+GET {{rootUrl}}/auth/profile
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QxMkBleGFtcGxlLmNvbSIsImlhdCI6MTc1NDg4NTA4NywiZXhwIjoxNzU0OTcxNDg3fQ.tcgBsnp_SoqZjw99NFIT6i5WVNHRIFFsFV06pWvc9cE
 
 ###generate the otp
 POST {{rootUrl}}/auth/otp

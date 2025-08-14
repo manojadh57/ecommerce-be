@@ -9,6 +9,7 @@ import {
 } from "../controllers/authController.js";
 
 import protect from "../middleware/authMiddleware.js";
+import { getUserByEmail } from "../models/user/UserModel.js";
 
 const router = Router();
 
