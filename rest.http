@@ -1,13 +1,19 @@
 @rootUrl = http://localhost:8000/api/customer/v1
 
+
+###check health
+
+POST {{rootUrl}}/healthz
+
+content
 ### SIGNUP REQUEST
 POST {{rootUrl}}/auth/signup
 Content-Type: application/json
 
 {
-  "fName": "test",
-  "lName": "test2",
-  "email": "tes1@example.com",
+  "fName": "test22",
+  "lName": "test222",
+  "email": "tes122@example.com",
   "password": "Password123"
 }
 

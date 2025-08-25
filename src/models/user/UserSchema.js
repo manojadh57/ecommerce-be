@@ -41,10 +41,22 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+
+    // 🔽 Reset password fields
+    resetPasswordToken: {
+      type: String,
+      default: "",
+    },
+    resetPasswordExpires: {
+      type: Date,
+      default: null,
+    },
   },
   {
     timestamps: true,
   }
 );
+
+userSchema.index({ resetPasswordToken: 1, resetPasswordExpires: 1 });
 
 export default mongoose.model("User", userSchema);

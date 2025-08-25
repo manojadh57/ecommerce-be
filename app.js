@@ -20,6 +20,10 @@ app.get("/", (req, res) =>
   res.json({ status: "sucess", message: "API is running" })
 );
 
+app.get("/healthz", (req, res) => {
+  res.json({ ok: true, port: process.env.PORT || 8001 });
+});
+
 app.use("/assets", express.static("assets"));
 
 //authRoutes//
