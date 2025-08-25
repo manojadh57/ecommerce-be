@@ -74,3 +74,28 @@ export const userProfileUpdateNotificationTemplate = ({email , name})=> {
     }
 }
 
+// src/services/emailTemplates.js
+export const orderPlacedNotificationTemplate = ({ email, name, orderId, trackingLink }) => {
+  return {
+    from: `AusTech <${process.env.SMTP_EMAIL}>`, // no extra quotes needed
+    to: email,
+    subject: '✅ Your Order Has Been Placed!',
+    text: `Hello ${name},
+
+Your order (#${orderId}) has been placed successfully.  
+You can track your order here: ${trackingLink}
+
+Thank you for shopping with AusTech!`,
+    html: `
+      <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+        <p>Dear <strong>${name}</strong>,</p>
+        <p>Your order <strong>#${orderId}</strong> has been placed successfully.</p>
+        <p>You can track your order here: 
+          <a href="${trackingLink}" style="color: #D97B3F;">Track My Order</a>
+        </p>
+        <br/>
+        <p>Thank you for shopping with <strong>AusTech</strong>! 🛒</p>
+      </div>
+    `
+  };
+};

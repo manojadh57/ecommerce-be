@@ -15,11 +15,28 @@ const orderSchema = new mongoose.Schema(
         quantity: Number,
       },
     ],
+    trackingId: {
+      type: String,
+      unique: true,
+      required: true,
+    },
     status: {
       type: String,
-      enum: ["pending", "shipped", "delivered", "cancelled"],
+      enum: ["pending", "processing", "shipped", "out for delivery", "delivered", "cancelled"],
       default: "pending",
     },
+    statusHistory: [
+      {
+        status: {
+          type: String,
+          enum: ["pending", "processing", "shipped", "out for delivery", "delivered", "cancelled"],
+        },
+        updatedAt: {
+          type: Date,
+          default: Date.now,
+        },
+      },
+    ],
     totalAmount: Number,
   },
   { timestamps: true }

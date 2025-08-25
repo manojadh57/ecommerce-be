@@ -7,7 +7,7 @@ Content-Type: application/json
 {
   "fName": "bibek",
   "lName": "hamal",
-  "email": "bbekhamal27@gmail.com",
+  "email": "bbekhamal26@gmail.com",
   "password": "Password123"
 }
 
@@ -15,11 +15,13 @@ Content-Type: application/json
 ###verify the user and activate
 GET {{rootUrl}}/auth/activate-user?sessionId=689d60c72ab2e01a9a9bb2c6&t=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QxMjM0NUBleGFtcGxlLmNvbSIsImlhdCI6MTc1NTE0NDM5MCwiZXhwIjoxNzU1MTQ1MjkwfQ.neDFjLlNsSIx7UFntelvTKaBF7a_KBcAE1XpZOpwXoA
 
+
+###login
 POST {{rootUrl}}/auth/login
 Content-Type: application/json
 
 {
-  "email": "test12@example.com",
+  "email": "bbekhamal26@gmail.com",
   "password": "Password"
 }
 
@@ -33,7 +35,7 @@ POST {{rootUrl}}/auth/otp
 Content-Type:  application/json 
 
 {
-  "email": "test12@example.com"
+  "email": "bbekhamal26@gmail.com"
 }
 
 
@@ -43,9 +45,9 @@ POST {{rootUrl}}/auth/reset-password
 Content-Type: application/json
 
 {
-    "email": "test12@example.com",
-  "password": "Password1234",
-  "otp":7850
+    "email": "bbekhamal26@gmail.com",
+  "password": "Password",
+  "otp":6218
 }
 
 ### TEST PRODUCTS
@@ -65,17 +67,19 @@ GET {{rootUrl}}/categories
 ### PLACE ORDER 
 POST {{rootUrl}}/orders
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlczFAZXhhbXBsZS5jb20iLCJpYXQiOjE3NTI2Mjk2MzMsImV4cCI6MTc1MjcxNjAzM30.N3sB_Nke8W-Xl1kAzOwuRd8VX-LZmyt0n9fB2hqDz-w
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJiZWtoYW1hbDI2QGdtYWlsLmNvbSIsImlhdCI6MTc1NTQyODg2MiwiZXhwIjoxNzU1NTE1MjYyfQ.NqdupvGXa1QNmu8snMWzz7tWJXnpR4abLVBoQcblWRs
 
 {
   "products": [
     {
-      "productId": "6876f89651a0344d0fb9f059",
+      "productId": "688ad4061121764a8731cab7",
       "quantity": 1
     }
   ],
   "totalAmount": 2499
 }
+###
+GET http://localhost:8000/api/customer/v1/orders/track/71209A
 
 ###GET MY ORDERS##
 GET {{rootUrl}}/orders
