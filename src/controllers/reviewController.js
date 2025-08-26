@@ -21,7 +21,7 @@ export const submitReview = async (req, res) => {
     if (review) {
       review.rating = r;
       review.comment = String(comment).trim();
-      review.approved = false; // re-approve after edits
+      review.approved = false;
       await review.save();
       return res.status(200).json(review);
     }

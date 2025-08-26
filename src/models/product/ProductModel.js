@@ -1,7 +1,5 @@
 import ProductModel from "./ProductSchema.js";
 
-// search = string, limit = number|undefined, includeRatings = boolean (kept for future),
-// category = string | string[] (ObjectId(s))
 export const fetchProducts = (search = "", limit, includeRatings, category) => {
   const filter = {};
 
@@ -27,7 +25,7 @@ export const fetchProducts = (search = "", limit, includeRatings, category) => {
   const q = ProductModel.find(filter).populate("category");
   if (limit !== undefined) q.limit(Number(limit));
 
-  return q; // caller awaits
+  return q;
 };
 
 export const fetchProductById = (id) =>

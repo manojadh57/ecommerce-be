@@ -32,6 +32,7 @@ export const signRefreshJWT = async ({ email }) => {
 
 export const verifyRefreshJWT = (token) => {
   try {
+    console.log(token);
     return jwt.verify(token, config.jwt.refreshSecret);
   } catch {
     return "invalid token";

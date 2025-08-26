@@ -31,7 +31,7 @@ const orderSchema = new mongoose.Schema(
       default: "pending",
     },
     totalAmount: Number, // still cents
-    address: { type: AddressSchema, default: null }, // 👈 must exist
+    address: { type: AddressSchema, default: null },
     shippingMethod: {
       type: String,
       enum: ["standard", "express"],

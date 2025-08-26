@@ -12,7 +12,7 @@ const isTxnNotSupported = (err) =>
     String(err?.message || err)
   );
 
-// ---------- server-side pricing (prevents tampering) ----------
+//  server-side pricing (prevents tampering)
 async function priceCartCents(products, shippingMethod) {
   if (!Array.isArray(products) || products.length === 0) {
     throw new Error("No products");
@@ -39,7 +39,7 @@ async function priceCartCents(products, shippingMethod) {
   return { subtotalCents, shipCents, totalCents: subtotalCents + shipCents };
 }
 
-// ---------- POST /api/customer/v1/payments/create-intent ----------
+//  POST /api/customer/v1/payments/create-intent
 export const createPaymentIntent = async (req, res) => {
   try {
     const { products = [], shippingMethod = "standard" } = req.body;
@@ -69,7 +69,7 @@ export const createPaymentIntent = async (req, res) => {
   }
 };
 
-// ---------- POST /api/customer/v1/payments/confirm-order ----------
+// POST /api/customer/v1/payments/confirm-order
 export const confirmPaidOrder = async (req, res) => {
   const session = await mongoose.startSession();
 
@@ -139,7 +139,7 @@ export const confirmPaidOrder = async (req, res) => {
               quantity: Number(p.quantity),
             })),
             totalAmount: totalCents, // cents
-            // ✅ enum-safe workflow state; payment success is tracked below
+            // enum-safe workflow state; payment success is tracked below
             status: "pending",
             address: address || null,
             notes: notes || "",
@@ -212,7 +212,7 @@ export const confirmPaidOrder = async (req, res) => {
               quantity: Number(p.quantity),
             })),
             totalAmount: totalCents, // cents
-            // ✅ enum-safe workflow state
+            // enum-safe workflow state
             status: "pending",
             address: address || null,
             notes: notes || "",

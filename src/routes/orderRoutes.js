@@ -9,7 +9,7 @@ import { protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-// TEMP admin guard (will always 403 until you implement admin users)
+
 const isAdmin = (req, res, next) => {
   const role = req.user?.role;
   if (role === "admin" || req.user?.isAdmin === true) return next();
@@ -37,7 +37,7 @@ const validateUpdateStatus = (req, res, next) => {
 router.post("/", protect, placeOrder);
 router.get("/", protect, getMyOrders);
 
-// Mount this only after you have an admin user flow:
+
 router.put(
   "/:id/status",
   protect,

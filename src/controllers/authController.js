@@ -18,18 +18,16 @@ import {
 } from "../helpers/emailHelper.js";
 import { hashPassword, comparePassword } from "../utils/bcrypt.js";
 
-// (Optional) Keep if used elsewhere; otherwise you can remove BASE_URL.
 const BASE_URL =
   process.env.API_BASE_URL || `http://localhost:${process.env.PORT || 8001}`;
 
-// ✅ One helper to pick the frontend base: env → request Origin → default
 const getFrontendBase = (req) => {
   const fromEnv = process.env.APP_BASE_URL?.trim();
-  const fromOrigin = req.get?.("origin"); // e.g., http://localhost:5173 from the browser
+  const fromOrigin = req.get?.("origin");
   return (fromEnv || fromOrigin || "http://localhost:5173").replace(/\/+$/, "");
 };
 
-// ============ SIGNUP (link-based verification) ============
+// SIGNUP
 export const signup = async (req, res) => {
   try {
     const fName = req.body.fName ?? req.body.firstName;
@@ -62,7 +60,7 @@ export const signup = async (req, res) => {
       verificationToken,
     });
 
-    // ✅ Build FE link dynamically (env/Origin-aware)
+    //  Build FE link dynamically (env/Origin-aware)
     const FE_BASE = getFrontendBase(req);
     const link = `${FE_BASE}/verify-email/${verificationToken}`;
 
@@ -90,7 +88,7 @@ export const signup = async (req, res) => {
   }
 };
 
-// ============ VERIFY EMAIL ============
+//  VERIFY EMAIL
 export const verifyEmail = async (req, res) => {
   try {
     const { token } = req.params;
@@ -179,11 +177,11 @@ export const login = async (req, res) => {
   }
 };
 
-// ============ REFRESH ACCESS TOKEN ============
+// REFRESH ACCESS TOKEN
 export const refreshAccess = async (req, res) => {
   try {
-    const { refreshToken } = req.body;
-    if (!refreshToken) {
+    const { token } = req.body;
+    if (!token) {
       return res
         .status(400)
         .json({ status: "error", message: "refreshToken missing" });
@@ -191,7 +189,7 @@ export const refreshAccess = async (req, res) => {
 
     let decoded;
     try {
-      decoded = verifyRefreshJWT(refreshToken);
+      decoded = verifyRefreshJWT(token);
     } catch {
       return res
         .status(401)
@@ -201,7 +199,7 @@ export const refreshAccess = async (req, res) => {
     const email = (decoded.email || "").toLowerCase();
     const user = await getUserByEmail(email);
 
-    if (!user || user.refreshJWT !== refreshToken) {
+    if (!user || user.refreshJWT !== token) {
       return res
         .status(401)
         .json({ status: "error", message: "Invalid refresh token" });
@@ -222,12 +220,11 @@ export const refreshAccess = async (req, res) => {
   }
 };
 
-// ============ REQUEST PASSWORD RESET ============
+// REQUEST PASSWORD RESET
 export const requestPasswordReset = async (req, res) => {
   try {
     const email = (req.body.email || "").toLowerCase().trim();
 
-    // Always return success to avoid user enumeration
     if (!email) {
       return res.json({
         status: "success",
@@ -246,7 +243,7 @@ export const requestPasswordReset = async (req, res) => {
         { resetPasswordToken: hashed, resetPasswordExpires: expires }
       );
 
-      // ✅ Build FE link dynamically here too
+      // Build FE link dynamically here too
       const FE_BASE = getFrontendBase(req);
       const link = `${FE_BASE}/reset-password/${raw}`;
 
@@ -254,7 +251,6 @@ export const requestPasswordReset = async (req, res) => {
         await sendPasswordResetEmail(email, link);
       } catch (e) {
         console.error("Reset email failed:", e?.message || e);
-        // still return generic success
       }
     }
 
@@ -271,7 +267,7 @@ export const requestPasswordReset = async (req, res) => {
   }
 };
 
-// ============ RESET PASSWORD WITH TOKEN ============
+// RESET PASSWORD WITH TOKEN
 export const resetPassword = async (req, res) => {
   try {
     const { token, password } = req.body;
@@ -285,7 +281,6 @@ export const resetPassword = async (req, res) => {
     const hashed = crypto.createHash("sha256").update(token).digest("hex");
     const now = new Date();
 
-    // find user with valid token; clear token immediately to prevent reuse
     const user = await updateUser(
       { resetPasswordToken: hashed, resetPasswordExpires: { $gt: now } },
       { resetPasswordToken: "", resetPasswordExpires: null }

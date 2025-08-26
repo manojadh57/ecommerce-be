@@ -7,14 +7,13 @@ const transporter = nodemailer.createTransport({
   ...config.mailerOptions,
 });
 
-// unified "from" identity: .env EMAIL_FROM → SMTP user → EMAIL_USER
 const FROM =
   process.env.EMAIL_FROM ||
   `"MANOJ" ${
     config?.mailerOptions?.auth?.user || process.env.EMAIL_USER || ""
   }`;
 
-// ========== Verification ==========
+//  Verification
 export const sendVerificationEmail = async (userEmail, verificationLink) => {
   if (!emailEnabled) {
     console.log("[EMAIL_DISABLED] verify", { to: userEmail, verificationLink });
@@ -43,7 +42,7 @@ export const sendVerificationEmail = async (userEmail, verificationLink) => {
   }
 };
 
-// ========== Order status ==========
+// Order status
 export const sendOrderStatusEmail = async ({ to, status, order }) => {
   if (!emailEnabled) {
     console.log("[EMAIL_DISABLED] order", { to, status, orderId: order?._id });
@@ -88,7 +87,7 @@ export const sendOrderStatusEmail = async ({ to, status, order }) => {
   }
 };
 
-// ========== Password reset ==========
+// Password reset
 export const sendPasswordResetEmail = async (to, link) => {
   if (!emailEnabled) {
     console.log("[EMAIL_DISABLED] reset", { to, link });
