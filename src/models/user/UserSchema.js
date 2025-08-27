@@ -42,7 +42,6 @@ const userSchema = new mongoose.Schema(
       required: true,
     },
 
-    // 🔽 Reset password fields
     resetPasswordToken: {
       type: String,
       default: "",
